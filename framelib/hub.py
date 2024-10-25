@@ -26,6 +26,8 @@ def get_message(
         auth = (username, password)
 
     res = requests.post(url, headers=headers, auth=auth, data=bytes.fromhex(msg))
+    if res.status_code != 200:
+        raise ValueError(f'hub error [{res.status_code}] {res.text}')
 
     if res.status_code != 200:
         raise ValueError(f'failed to validate message with hub: {res.text}')

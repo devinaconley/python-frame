@@ -28,6 +28,8 @@ def get_frame_message(msg: str, api_key: str) -> NeynarValidatedMessage:
     }
 
     res = requests.post(url, json=body, headers=headers)
+    if res.status_code != 200:
+        raise ValueError(f'neynar error [{res.status_code}] {res.text}')
 
     if res.status_code != 200:
         raise ValueError(f'failed to validate message with neynar: {res.text}')

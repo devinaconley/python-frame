@@ -108,7 +108,6 @@ class NeynarInteractor(BaseModel):
     follower_count: int
     following_count: int
     verifications: list[str]
-    active_status: str
     viewer_context: Optional[NeynarViewer] = None
 
 

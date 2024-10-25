@@ -41,3 +41,14 @@ for an example that uses on-chain frame transactions, see the [weth frame](https
 
 and for a more advanced example involving multiplayer games, supabase integration, dynamic image rendering, and more,
 see [rock paper scissors](https://github.com/devinaconley/rock-paper-scissors)
+
+
+## roadmap
+
+upcoming features and improvements
+- mint actions
+- eip 712 signatures
+- generated library documentation
+- dynamic image rendering tools
+- compatibility with other web frameworks
+- state signing
