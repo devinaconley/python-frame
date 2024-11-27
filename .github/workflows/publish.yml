@@ -7,6 +7,9 @@ on:
 
 jobs:
 
+  test:
+    uses: ./.github/workflows/test.yml
+
   build:
     name: build framelib dist
     needs: test
