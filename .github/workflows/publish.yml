@@ -1,0 +1,57 @@
+name: publish
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+
+  build:
+    name: build framelib dist
+    needs: test
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: check out git repository
+      uses: actions/checkout@v4
+
+    - name: setup python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.x'
+
+    - name: install python dependencies
+      run: pip install build
+
+    - name: build binary wheel and source tarball
+      run: python3 -m build
+
+    - name: store the dist package
+      uses: actions/upload-artifact@v4
+      with:
+        name: distribution
+        path: dist/
+
+
+  publish:
+    name: publish framelib to pypi
+    needs: build
+
+    runs-on: ubuntu-latest
+    env:
+      name: release
+      url: https://pypi.org/p/framelib
+    permissions:
+      id-token: write
+
+    steps:
+      - name: get dist package
+        uses: actions/download-artifact@v4
+        with:
+          name: distribution
+          path: dist/
+
+      - name: publish package to pypi
+        uses: pypa/gh-action-pypi-publish@release/v1
