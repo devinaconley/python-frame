@@ -44,7 +44,7 @@ jobs:
     needs: build
 
     runs-on: ubuntu-latest
-    env:
+    environment:
       name: release
       url: https://pypi.org/p/framelib
     permissions:
