@@ -51,3 +51,14 @@ def transaction(
     res = jsonify(tx.model_dump(mode='json', exclude_none=True))
     res.status_code = 200
     return res
+
+
+def mint(chain_id: int, contract: str, token_id: int = None) -> str:
+    if not is_address(contract):
+        raise ValueError(f'invalid contract address {contract}')
+
+    target = f'eip155:{chain_id}:{contract}'
+    if token_id is not None:
+        target += f':{token_id}'
+
+    return target
