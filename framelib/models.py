@@ -4,7 +4,8 @@ data models
 
 import datetime
 from typing import Optional, Literal
-from pydantic import BaseModel
+from pydantic import BaseModel, SerializeAsAny
+from eth_utils import is_address
 
 
 # ---- frame message ----
@@ -46,14 +47,62 @@ class FrameMessage(BaseModel):
 class EthTransactionParams(BaseModel):
     abi: list[dict]
     to: str
-    value: Optional[str]
-    data: Optional[str]
+    value: Optional[str] = None
+    data: Optional[str] = None
 
 
 class Transaction(BaseModel):
     chainId: str
     method: Literal['eth_sendTransaction']
     params: EthTransactionParams
+
+
+# ---- signature ----
+
+class Address(str):
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, value, info):
+        if not is_address(value):
+            raise ValueError('invalid ethereum address')
+        return value
+
+
+class Bytes32(str):
+    pass
+
+
+class Bytes(str):
+    pass
+
+
+class Eip712Domain(BaseModel):
+    name: Optional[str] = None
+    version: Optional[str] = None
+    chainId: Optional[int] = None
+    verifyingContract: Optional[Address] = None
+    salt: Optional[str] = None
+
+
+class Eip712TypeField(BaseModel):
+    name: str
+    type: str
+
+
+class Eip712Params(BaseModel):
+    domain: Eip712Domain
+    types: dict[str, list[Eip712TypeField]]
+    primaryType: str
+    message: SerializeAsAny[BaseModel]
+
+
+class Signature(BaseModel):
+    chainId: str
+    method: Literal['eth_signTypedData_v4']
+    params: Eip712Params
 
 
 # ---- frame error ----
