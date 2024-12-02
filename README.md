@@ -3,11 +3,11 @@
 lightweight library for building farcaster frames using python and flask
 
 - easily render frames that conform to the farcaster specification
-- configurable frame design
-- parse frame action messages
-- verify the frame action signatures using neynar
+- parse and verify frame action messages using neynar or hubs
 - query user profile info from warpcast
 - on-chain frame transactions
+- eip-712 signatures
+- mint tokens
 
 
 ## quickstart
@@ -27,7 +27,7 @@ app = Flask(__name__)
 @app.route('/')
 def home():
     return frame(
-        image='https://opengraph.githubassets.com/0x/devinaconley/python-frames',
+        image='https://framelib.s3.us-east-1.amazonaws.com/framelib_logo.png',
         button1='next',
         post_url=url_for('second_page', _external=True),
     )
@@ -46,9 +46,10 @@ see [rock paper scissors](https://github.com/devinaconley/rock-paper-scissors)
 ## roadmap
 
 upcoming features and improvements
-- mint actions
-- eip 712 signatures
+- ~~mint actions~~
+- ~~eip 712 signatures~~
 - generated library documentation
-- dynamic image rendering tools
+- ~~dynamic image rendering tools~~
 - compatibility with other web frameworks
 - state signing
+- **frames v2 support**

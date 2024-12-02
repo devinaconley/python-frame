@@ -1,4 +1,5 @@
 # requirements.txt
 framelib~=1.0.0b0
 Flask~=3.0.1
+pillow~=11.0.0
 pydantic
