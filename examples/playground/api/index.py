@@ -72,18 +72,14 @@ def page_hello():
 
 @app.route('/signature', methods=['POST'])
 def page_signature():
-    # parse frame message
-    msg = message()
-    print(f'received frame message: {msg}')
-
-    # validate frame message with neynar
+    # parse and validate frame message
     api_key = os.getenv('NEYNAR_KEY')
-    msg_neynar = validate_message_or_mock_neynar(msg, api_key, mock=_vercel_local())
-    print(f'validated frame message, fid: {msg_neynar.interactor.fid}, button: {msg_neynar.tapped_button}')
+    msg = validate_message_or_mock_neynar(message(), api_key, mock=_vercel_local())
+    print(f'verified frame message: {msg}')
 
     return frame(
         image=url_for('render_image', title='signature', msg=f'sign an eip-712 message!', _external=True),
-        button1='back \U0001F519',
+        button1='hello \U0001F519',
         button1_target=url_for('page_hello', _external=True),
         post_url=url_for('handle_signature', _external=True),
         input_text=f'enter a message to sign',
@@ -110,20 +106,21 @@ class Message(BaseModel):
 def handle_signature():
     msg = message()
     print(msg)
+
     if msg.untrustedData.transactionId is not None:
         sig = msg.untrustedData.transactionId
-        print(f'received signature: {sig}')
-        # TODO verify
+        print(f'received eip-712 signature: {sig}')
+        # note: verify signature here
+
         return frame(
             image=url_for('render_image', title='signature', msg='thanks for signing.', _external=True),
-            button1='back \U0001F519',
+            button1='hello \U0001F519',
             button1_target=url_for('page_hello', _external=True),
             post_url=url_for('handle_signature', _external=True),
             button2='puzzle \U000027A1',
             button2_target=url_for('page_puzzle', _external=True)
         )
 
-    # validate
     api_key = os.getenv('NEYNAR_KEY')
     msg_neynar = validate_message_or_mock_neynar(msg, api_key, mock=_vercel_local())
 
@@ -145,19 +142,39 @@ def page_puzzle():
     print(f'received frame message: {msg}')
 
     # check input
-    if msg.untrustedData.buttonIndex == 2 and msg.untrustedData.inputText.lower() != 'build':
-        return error('secret is incorrect!')  # popup message to user
+    if msg.untrustedData.inputText:
+        if msg.untrustedData.inputText.lower() != 'build':
+            return error('secret is incorrect!')  # popup message to user
+        else:
+            return frame(
+                image=url_for('render_image', title='puzzle', msg='[the secret is build]', _external=True),
+                button1='signature \U0001F519',
+                post_url=url_for('page_signature', _external=True),
+                button2='links \U000027A1',
+                button2_target=url_for('page_link', _external=True)
+            )
 
     return frame(
         image=url_for('render_image', title='puzzle', msg='20 8 5 19 5 3 18 5 20 9 19 2 21 9 12 4', _external=True),
-        button1='back \U0001F519',
-        button1_target=url_for('page_hello', _external=True),
+        button1='signature \U0001F519',
+        button1_target=url_for('page_signature', _external=True),
         post_url=url_for('page_puzzle', _external=True),
         input_text=f'enter the secret',
         button2='\U0001F512',
-        button2_target=url_for('handle_signature', _external=True),
-        button3='puzzle \U000027A1',
+        button3='links \U000027A1',
         button3_target=url_for('page_link', _external=True)
+    )
+
+
+@app.route('/link', methods=['POST'])
+def page_link():
+    return frame(
+        image=_github_preview_image(),
+        button1='puzzle \U0001F519',
+        post_url=url_for('page_puzzle', _external=True),
+        button2='github \U0001F680',
+        button2_action='link',
+        button2_target='https://github.com/devinaconley/python-framelib'
     )
 
 

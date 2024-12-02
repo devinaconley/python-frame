@@ -1,4 +1,4 @@
 # requirements.txt
-framelib~=0.0.5
+framelib~=1.0.0b0
 Flask~=3.0.1
 pydantic
