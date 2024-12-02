@@ -142,32 +142,34 @@ def handle_signature():
 
 @app.route('/puzzle', methods=['POST'])
 def page_puzzle():
+    return frame(
+        image=url_for('render_image', title='puzzle', msg='20 8 5 19 5 3 18 5 20 9 19 2 21 9 12 4', _external=True),
+        button1='signature \U0001F519',
+        button1_target=url_for('page_signature', _external=True),
+        post_url=url_for('handle_puzzle', _external=True),
+        input_text=f'enter the secret',
+        button2='\U0001F512',
+        button3='links \U000027A1',
+        button3_target=url_for('page_link', _external=True)
+    )
+
+
+@app.route('/puzzle/submit', methods=['POST'])
+def handle_puzzle():
     # parse frame message
     msg = message()
     print(f'received frame message: {msg}')
 
     # check input
-    if msg.untrustedData.inputText:
-        if msg.untrustedData.inputText.lower() != 'build':
-            return error('secret is incorrect!')  # popup message to user
-        else:
-            return frame(
-                image=url_for('render_image', title='puzzle', msg='[the secret is build]', _external=True),
-                button1='signature \U0001F519',
-                post_url=url_for('page_signature', _external=True),
-                button2='links \U000027A1',
-                button2_target=url_for('page_link', _external=True)
-            )
+    if not msg.untrustedData.inputText or msg.untrustedData.inputText.lower() != 'build':
+        return error('secret is incorrect!')  # popup message to user
 
     return frame(
-        image=url_for('render_image', title='puzzle', msg='20 8 5 19 5 3 18 5 20 9 19 2 21 9 12 4', _external=True),
+        image=url_for('render_image', title='puzzle', msg='[the secret is build]', _external=True),
         button1='signature \U0001F519',
-        button1_target=url_for('page_signature', _external=True),
-        post_url=url_for('page_puzzle', _external=True),
-        input_text=f'enter the secret',
-        button2='\U0001F512',
-        button3='links \U000027A1',
-        button3_target=url_for('page_link', _external=True)
+        post_url=url_for('page_signature', _external=True),
+        button2='links \U000027A1',
+        button2_target=url_for('page_link', _external=True)
     )
 
 
@@ -177,7 +179,7 @@ def page_link():
         image=_github_preview_image(),
         button1='puzzle \U0001F519',
         post_url=url_for('page_puzzle', _external=True),
-        button2='github \U0001F680',
+        button2='github',
         button2_action='link',
         button2_target='https://github.com/devinaconley/python-framelib'
     )

@@ -51,7 +51,7 @@ def validate_message(msg: FrameMessage, api_key: str) -> NeynarValidatedMessage:
     if msg.untrustedData.buttonIndex != action.tapped_button.index:
         raise ValueError(f'button index does not match: {msg.untrustedData.buttonIndex} {action.tapped_button.index}')
 
-    if msg.untrustedData.inputText is not None and msg.untrustedData.inputText != action.input.text:
+    if msg.untrustedData.inputText is not None and action.input is not None and msg.untrustedData.inputText != action.input.text:
         raise ValueError(f'text input does not match: {msg.untrustedData.inputText} {action.input.text}')
 
     if msg.untrustedData.state is not None and msg.untrustedData.state != action.state.serialized:

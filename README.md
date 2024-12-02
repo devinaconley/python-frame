@@ -35,9 +35,12 @@ def home():
 
 ## examples
 
-see a complete example using python + flask + vercel [here](https://github.com/devinaconley/python-frames/tree/main/examples/simple)
+see a complete example using python + flask + vercel [here](https://github.com/devinaconley/python-framelib/tree/main/examples/simple)
 
-for an example that uses on-chain frame transactions, see the [weth frame](https://github.com/devinaconley/python-frames/tree/main/examples/transaction)
+for an example that uses on-chain frame transactions, see the [weth frame](https://github.com/devinaconley/python-framelib/tree/main/examples/transaction)
+
+for a demo of eip-712 signatures, text inputs, image rendering, and links, see [playground](https://github.com/devinaconley/python-framelib/tree/main/examples/playground)
+
 
 and for a more advanced example involving multiplayer games, supabase integration, dynamic image rendering, and more,
 see [rock paper scissors](https://github.com/devinaconley/rock-paper-scissors)
