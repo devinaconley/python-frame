@@ -32,7 +32,12 @@ def handle_invalid_usage(e):
 def page_home():
     # initial frame
     return frame(
-        image=_github_preview_image(),
+        image=url_for(
+            'render_image',
+            title='framelib',
+            msg='lightweight library for building farcaster frames\nin python\n\nby @conley',
+            _external=True
+        ),
         button1='hello \U0001F44B',
         post_url=url_for('page_hello', _external=True),
         button2='github',
@@ -184,14 +189,17 @@ def render_image():
     msg = request.args.get('msg', default='')
 
     # setup image background
-    image = Image.new('RGB', (382, 200), color=(211, 211, 211))
+    image = Image.new('RGB', (764, 400), color=(211, 211, 211))
     draw = ImageDraw.Draw(image)
 
     # write text
-    font = ImageFont.truetype('DejaVuSansMono-Bold.ttf', 28)
+    font = ImageFont.truetype('DejaVuSansMono-Bold.ttf', 36)
     draw.text((10, 10), title, fill=(0, 0, 0), font=font)
-    font = ImageFont.truetype('DejaVuSansMono.ttf', 16)
-    draw.text((10, 60), msg, fill=(0, 0, 0), font=font)
+    y = 80
+    for m in msg.split('\n'):
+        font = ImageFont.truetype('DejaVuSansMono.ttf', 20)
+        draw.text((10, y), m, fill=(0, 0, 0), font=font)
+        y += 25
 
     # encode image response
     buffer = BytesIO()

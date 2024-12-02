@@ -3,11 +3,11 @@
 lightweight library for building farcaster frames using python and flask
 
 - easily render frames that conform to the farcaster specification
-- configurable frame design
-- parse frame action messages
-- verify the frame action signatures using neynar
+- parse and verify frame action messages using neynar or hubs
 - query user profile info from warpcast
 - on-chain frame transactions
+- eip-712 signatures
+- mint tokens
 
 
 ## quickstart
