@@ -193,11 +193,11 @@ def render_image():
     draw = ImageDraw.Draw(image)
 
     # write text
-    font = ImageFont.truetype('DejaVuSansMono-Bold.ttf', 36)
+    font = ImageFont.truetype('api/static/DejaVuSansMono-Bold.ttf', 36)
     draw.text((10, 10), title, fill=(0, 0, 0), font=font)
     y = 80
     for m in msg.split('\n'):
-        font = ImageFont.truetype('DejaVuSansMono.ttf', 20)
+        font = ImageFont.truetype('api/static/DejaVuSansMono.ttf', 20)
         draw.text((10, y), m, fill=(0, 0, 0), font=font)
         y += 25
 
