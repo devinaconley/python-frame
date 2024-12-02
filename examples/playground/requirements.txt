@@ -1,0 +1,5 @@
+# requirements.txt
+framelib~=0.0.5
+Flask~=3.0.1
+pillow~=11.0.0
+pydantic
